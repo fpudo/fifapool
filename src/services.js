@@ -11,7 +11,8 @@ const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').d
 
 
 export const loadRank = () => {
-  return db.collection('rank').find({owner_id: client.auth.user.id}, {limit: 1000}).asArray()
+    console.log(client)
+  return db.collection('rank').find({owner_id: '5b3e4b9a8f25b923101323a7'}, {limit: 1000}).asArray()
 }
 
 export const addRank = () => {
