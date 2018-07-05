@@ -8,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -22,11 +23,10 @@ const CustomTableCell = withStyles(theme => ({
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
   table: {
-    minWidth: 700,
+    minWidth: 300,
   },
   row: {
     '&:nth-of-type(odd)': {
@@ -36,26 +36,19 @@ const styles = theme => ({
 });
 
 let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
 
-const data = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+
 
 function RankPres(props) {
-  const { classes } = props;
+  const { classes, participants } = props;
 
   return (
     <Paper className={classes.root}>
       <Table className={classes.table}>
         <TableHead>
+          <div style={{padding: 16}} >
+            <Typography variant="headline">FIFA World Cup 2018</Typography>
+          </div>
           <TableRow>
             <CustomTableCell>Participant</CustomTableCell>
             <CustomTableCell numeric>Champion</CustomTableCell>
@@ -63,14 +56,14 @@ function RankPres(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map(n => {
+          {participants.map(p => {
             return (
-              <TableRow className={classes.row} key={n.id}>
+              <TableRow className={classes.row} key={`${p.name}-id`}>
                 <CustomTableCell component="th" scope="row">
-                  {n.name}
+                  {p.name}
                 </CustomTableCell>
-                <CustomTableCell numeric>{n.calories}</CustomTableCell>
-                <CustomTableCell numeric>{n.fat}</CustomTableCell>
+                <CustomTableCell numeric>{p.champion}</CustomTableCell>
+                <CustomTableCell numeric>{p.points}</CustomTableCell>
               </TableRow>
             );
           })}

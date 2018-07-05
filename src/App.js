@@ -1,32 +1,39 @@
 import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import {loadRank} from './services';
 import RankPres from './rankPres';
 
+// client.auth.loginWithCredential(new AnonymousCredential()).then(user => 
+//   // db.collection('users').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
+//   db.collection('users').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
+// ).then(docs => {
+//     console.log("Found docs", docs)
+//     console.log("[MongoDB Stitch] Connected to Stitch")
+// }).catch(err => {
+//     console.error(err)
+// });
+
+// addUsers();
+
+
 class App extends Component {
+
+  state = {
+    participants: []
+  }
+
+  componentDidMount(){
+     loadRank().then(res => this.setState({participants: res[0].participants}) )
+  }
+
   render() {
-    const {classes} = this.props;
+    const {participants} = this.state;
     return (
-      <div className={classes.root}>
-      <AppBar position="static" color="default">
-        <Toolbar>
-          <Typography variant="title" color="inherit">
-            World Cup Pool
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <RankPres />
-    </div>
+      <div>
+        <RankPres participants={participants} />
+      </div>
     );
   }
 }
 
-const styles = {
-  root: {
-    flexGrow: 1,
-  },
-};
 
-export default withStyles(styles)(App);
+export default App;
