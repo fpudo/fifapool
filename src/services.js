@@ -5,25 +5,25 @@ import {
   } from "mongodb-stitch-browser-sdk";
 
 const client = Stitch.initializeDefaultAppClient('sqbox-pool-fvwhb');
+console.log(client)
 
 const db = client.getServiceClient(RemoteMongoClient.factory, 'mongodb-atlas').db('fifa-pool');
 
-client.auth.loginWithCredential(new AnonymousCredential()).then(user => 
-  db.collection('Users').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
-).then(() => 
-  db.collection('Users').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
-).then(docs => {
-    console.log("Found docs", docs)
-    console.log("[MongoDB Stitch] Connected to Stitch")
-}).catch(err => {
-    console.error(err)
-});
-
-
-export const loadRank = () => {
-  
-  return  db.collection('rank').find({owner_id: client.auth.user.id}, {limit: 1000}).asArray() 
-  
+export const loadRank = (id) => {
+  let ret;
+  client.auth.loginWithCredential(new AnonymousCredential()).then(user => 
+    db.collection('Users').updateOne({owner_id: client.auth.user.id}, {$set:{number:42}}, {upsert:true})
+  ).then(() => 
+    // db.collection('Users').find({owner_id: client.auth.user.id}, { limit: 100}).asArray()
+    db.collection('rank').find({owner_id: client.auth.user.id}, {limit: 1000}).asArray()
+  ).then(docs => {
+      ret = docs[0]
+      console.log("Found docs", docs)  
+      console.log("[MongoDB Stitch] Connected to Stitch")
+  }).catch(err => {
+      console.error(err)
+  });
+  return ret
 }
 
 export const addRank = () => {
