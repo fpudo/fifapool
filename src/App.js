@@ -18,7 +18,7 @@ class App extends Component {
   componentDidMount(){
     client.auth.loginWithCredential(new AnonymousCredential()).then(user => {
       console.log(user)
-     return db.collection('rank').find({}, {limit: 1000}).asArray()
+      db.collection('rank').find({owner_id: user.id}, {limit: 1000}).asArray()
     }
     ).then(docs => {
       this.setState({participants: docs[0].participants.sort(((a,b) => b.points - a.points))})
